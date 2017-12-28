@@ -1,0 +1,24 @@
+{"version": "0.2.0",
+"configurations": [
+
+    {
+        "type": "node",
+        "request": "launch",
+        "protocol": "inspector",
+        "name": "run getEvents function",
+        "program": "${workspaceRoot}/node_modules/serverless/bin/serverless",
+        "args": [
+            "invoke",
+            "local",
+            "-f",
+            "getEvents",
+            "--data",
+            "{}"
+        ],
+        "env":{
+            "SLS_DEBUG":"*"
+        },
+        "port":5858
+
+    }
+]}

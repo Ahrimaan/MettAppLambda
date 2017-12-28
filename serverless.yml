@@ -1,0 +1,41 @@
+service: mettapp-api
+plugins:
+  - serverless-webpack
+custom:
+  webpackIncludeModules: true
+provider: 
+  name: aws
+  runtime: nodejs6.10
+  stage: prod
+  region: eu-central-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:eu-central-1:*:*"
+
+functions:
+  getEvents:
+    handler: getEvents.main
+    events:
+      - http: 
+          path: events
+          method: get
+          cors: true
+          authorizer: aws_iam
+  createEvent:
+    handler: createEvent.main
+    events:
+      - http: 
+          path: events
+          method: post
+          cors: true
+          authorizer: aws_iam
+  
+          
