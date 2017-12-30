@@ -8,3 +8,8 @@ export function call(action, params) {
     const dynamoDb = new AWS.DynamoDB.DocumentClient();
     return dynamoDb[action](params).promise();
 }
+
+export function query(params) {
+    const dynamoDb = new AWS.DynamoDB.DocumentClient();
+    return dynamoDb.query(params).promise();
+}
