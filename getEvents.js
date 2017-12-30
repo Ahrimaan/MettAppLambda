@@ -25,7 +25,7 @@ export async function main(event, context, callback) {
     try {
         const result = await dynamoDbLib.call('query',params);
         if (result.Items) {
-            callback(null, success(result.Item));
+            callback(null, success(result.Items));
         } else {
             callback(null, notFound({
                 status: false,
