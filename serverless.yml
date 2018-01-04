@@ -28,6 +28,11 @@ functions:
           path: events
           method: get
           cors: true
-          authorizer: aws_iam
-  
+  authenticate:
+    handler: authenticate.main
+    events:
+      - http:
+          path: auth
+          method: post
+          cors: true
           
