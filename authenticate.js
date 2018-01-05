@@ -41,8 +41,10 @@ module.exports.auth = (event, context, callback) => {
   const options = {
     audience: AUTH0_CLIENT_ID,
   }
+
+
   // decode base64 secret. ref: http://bit.ly/2hA6CrO
-  const secret = new Buffer.from(AUTH0_CLIENT_SECRET, 'base64')
+  const secret = process.env.IS_BASE64 === 'true' ? new Buffer.from(AUTH0_CLIENT_SECRET, 'base64') : AUTH0_CLIENT_SECRET;
   try {
     jwt.verify(tokenValue, secret, options, (verifyError, decoded) => {
       if (verifyError) {

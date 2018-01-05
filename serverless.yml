@@ -28,7 +28,23 @@ functions:
     handler: getEvents.main
     events:
       - http: 
-          path: events
+          path: events/{id}
+          method: get
+          cors: true
+          authorizer: auth
+  getUserInformation:
+    handler: getUserInformation.main
+    events:
+      - http: 
+          path: user/{id}
+          method: get
+          cors: true
+          authorizer: auth
+  getTenants:
+    handler: getTenants.main
+    events:
+      - http: 
+          path: tenant
           method: get
           cors: true
           authorizer: auth

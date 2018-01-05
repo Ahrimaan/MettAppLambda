@@ -6,8 +6,7 @@ import {
 } from "./libs/response-lib";
 
 export async function main(event, context, callback) {
-    const tenantID = event.headers['tenant'];
-    console.log(tenantID);
+    const tenantID = event.pathParameters.id;
     const params = {
         TableName: "events",
         // 'KeyConditionExpression' defines the condition for the query
