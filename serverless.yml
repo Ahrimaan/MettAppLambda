@@ -21,6 +21,9 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:eu-central-1:*:*"
 functions:
+  auth:
+    handler: authenticate.auth
+    cors: true
   getEvents:
     handler: getEvents.main
     events:
@@ -28,11 +31,27 @@ functions:
           path: events
           method: get
           cors: true
-  authenticate:
-    handler: authenticate.main
-    events:
-      - http:
-          path: auth
-          method: post
-          cors: true
-          
+          authorizer: auth
+resources:
+  Resources:
+    # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: EXPIRED_TOKEN
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+    AuthFailureGatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'      
