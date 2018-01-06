@@ -16,7 +16,9 @@ export async function main(event, context, callback) {
         Item: {
             userId: userId,
             tenant: data.tenantId,
-            isAdmin:false
+            isAdmin:false,
+            email: data.mail,
+            username: data.username
         }
     };
     console.log(params);
