@@ -34,6 +34,7 @@ module.exports.auth = (event, context, callback) => {
   const tokenParts = event.authorizationToken.split(' ')
   const tokenValue = tokenParts[1]
 
+ 
   if (!(tokenParts[0].toLowerCase() === 'bearer' && tokenValue)) {
     // no auth token!
     return callback('Unauthorized')
@@ -55,7 +56,8 @@ module.exports.auth = (event, context, callback) => {
       }
       // is custom authorizer function
       console.log('valid from customAuthorizer', decoded)
-      return callback(null, generatePolicy(decoded.sub, 'Allow', event.methodArn))
+      // * is a fix for calling multiple APIs
+      return callback(null, generatePolicy(decoded.sub, 'Allow', '*'))
     })
    } catch (err) {
     console.log('catch error. Invalid token', err)
