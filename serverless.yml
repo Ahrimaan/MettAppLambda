@@ -48,6 +48,14 @@ functions:
           method: get
           cors: true
           authorizer: auth
+  addUserInformation:
+    handler: addUserInformation.main
+    events:
+      - http: 
+          path: user
+          method: post
+          cors: true
+          authorizer: auth
 resources:
   Resources:
     # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
