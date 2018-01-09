@@ -10,6 +10,10 @@ export function notFound(body){
     return buildResponse(404,body);
 }
 
+export function unauthorized(body){
+    return buildResponse('401',body);
+}
+
 export function noContent(body){
     return buildResponse(204,body);
 }

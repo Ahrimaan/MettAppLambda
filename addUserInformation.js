@@ -7,8 +7,6 @@ import {
 } from "./libs/response-lib";
 
 export async function main(event, context, callback) {
-    console.log(event.body);
-    console.log(event.requestContext.authorizer.principalId)
     const data = JSON.parse(event.body);
     const userId = event.requestContext.authorizer.principalId.split('|')[1];
     const params = {
