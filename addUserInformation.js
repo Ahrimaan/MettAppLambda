@@ -16,7 +16,8 @@ export async function main(event, context, callback) {
             tenant: data.tenantId,
             isAdmin:false,
             email: data.mail,
-            username: data.username
+            username: data.username,
+            paypalLink : data.paypalLink
         }
     };
     console.log(params);
