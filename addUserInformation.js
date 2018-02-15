@@ -7,7 +7,7 @@ import {
 } from "./libs/response-lib";
 
 export async function main(event, context, callback) {
-    const data = JSON.parse(event.body);
+    const data = JSON.parse(event);
     const userId = event.requestContext.authorizer.principalId.split('|')[1];
     const params = {
         TableName: "userInformation",
