@@ -31,6 +31,14 @@ functions:
           path: events/{id}
           method: get
           cors: true
+          authorizer: 
+  createEvent:
+    handler: createEvent.main
+    events:
+      - http: 
+          path: events
+          method: post
+          cors: true
           authorizer: auth
   getUserInformation:
     handler: getUserInformation.main
@@ -54,6 +62,14 @@ functions:
       - http: 
           path: user
           method: post
+          cors: true
+          authorizer: auth
+  updateUserInformation:
+    handler: updateUserInformation.main
+    events:
+      - http: 
+          path: user
+          method: patch
           cors: true
           authorizer: auth
 resources:
