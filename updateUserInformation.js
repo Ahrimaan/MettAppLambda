@@ -6,9 +6,10 @@ import {
 
 export async function main(event, context, callback) {
     console.log("incoming update with data:  ", event);
-    const data = JSON.parse(event.body);
-    
+    const data = event;
+    console.log("Recieved data :" , data);
     let userID = data.userId;
+    console.log("UserID:" , userID);
     const params = getUpdateParams(data,userID);
     console.log("DB Params:" , params);
     try {
@@ -24,30 +25,33 @@ export async function main(event, context, callback) {
 }
 
 function getUpdateParams(data, userId) {
+    console.log("Adding params: " , data," userid: ", userId)
+    let params = {};
     if(data.tenant) {
-        return {
+        params = {
             TableName: "userInformation",
             Key: {
                 userId: userId
             },
             UpdateExpression: "set tenant = :tenant",
             ExpressionAttributeValues: {
-                ":tenant":  { "S" :  data.tenant}
+                ":tenant":  data.tenant
             },
             ReturnValues: "ALL_NEW"
         };
     }
     if(data.paypalLink) {
-        return {
+        params = {
             TableName: "userInformation",
             Key: {
                 userId: userId
             },
             UpdateExpression: "set paypalLink = :paypalLink",
             ExpressionAttributeValues: {
-                ":paypalLink": { "S" :  data.paypalLink}
+                ":paypalLink": data.paypalLink
             },
             ReturnValues: "ALL_NEW"
         };
     }
+    return params;
 }
