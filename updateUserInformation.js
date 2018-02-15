@@ -5,9 +5,12 @@ import {
 } from "./libs/response-lib";
 
 export async function main(event, context, callback) {
+    console.log("incoming update with data:  ", event);
     const data = JSON.parse(event.body);
-    let userID = event.requestContext.identity.cognitoIdentityId;
+    
+    let userID = data.userId;
     const params = getUpdateParams(data,userID);
+    console.log("DB Params:" , params);
     try {
         const result = await dynamoDbLib.call("update", params);
         callback(null, success({
@@ -15,35 +18,34 @@ export async function main(event, context, callback) {
         }));
     } catch (e) {
         console.log(e);
-        callback(null, failure({
-            status: false
-        }));
+        let error = new Error(e);
+        callback(null,failure(e));
     }
 }
 
 function getUpdateParams(data, userId) {
-    if(data.tenant && !data.paypalLink) {
+    if(data.tenant) {
         return {
             TableName: "userInformation",
             Key: {
                 userId: userId
             },
-            UpdateExpression: "SET tenant = :tenant",
+            UpdateExpression: "set tenant = :tenant",
             ExpressionAttributeValues: {
-                ":tenant": data.tenant ? data.tentant : null
+                ":tenant":  { "S" :  data.tenant}
             },
             ReturnValues: "ALL_NEW"
         };
     }
-    if(data.paypalLink && !data.tenant) {
+    if(data.paypalLink) {
         return {
             TableName: "userInformation",
             Key: {
                 userId: userId
             },
-            UpdateExpression: "SET paypalLink = :paypalLink",
+            UpdateExpression: "set paypalLink = :paypalLink",
             ExpressionAttributeValues: {
-                ":paypalLink": data.paypalLink ? data.paypalLink : null
+                ":paypalLink": { "S" :  data.paypalLink}
             },
             ReturnValues: "ALL_NEW"
         };

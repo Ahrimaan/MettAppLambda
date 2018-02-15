@@ -69,7 +69,7 @@ functions:
     events:
       - http: 
           path: user
-          method: patch
+          method: put
           cors: true
           authorizer: auth
 resources:
