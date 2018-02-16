@@ -1,8 +1,11 @@
 service: chaosmett-api
 plugins:
-  - serverless-webpack
+  - serverless-webpack 
+  - serverless-offline
 custom:
   webpackIncludeModules: true
+  serverless-offline: 
+    host: "192.168.2.19"
 provider: 
   name: aws
   memorySize: 128
@@ -31,7 +34,7 @@ functions:
           path: events/{id}
           method: get
           cors: true
-          authorizer: 
+          authorizer: auth
   createEvent:
     handler: createEvent.main
     events:
