@@ -6,11 +6,9 @@ import {
 
 export async function main(event, context, callback) {
     console.log("incoming update with data:  ", event);
-    const data = event;
-    console.log("Recieved data :" , data);
-    let userID = data.userId;
+    let userID = context.requestContext.authorizer.principalId.split('|')[1];
     console.log("UserID:" , userID);
-    const params = getUpdateParams(data,userID);
+    const params = getUpdateParams(event,userID);
     console.log("DB Params:" , params);
     try {
         const result = await dynamoDbLib.call("update", params);
